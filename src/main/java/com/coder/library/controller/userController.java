@@ -3,13 +3,10 @@ package com.coder.library.controller;
 import com.coder.library.entity.users;
 import com.coder.library.services.userServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.util.List;
 
 @RestController
@@ -31,18 +28,18 @@ public class userController {
             return new ResponseEntity<>("check Request Body may be column have duplicate Value...",HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("find/{id}")
-    public ResponseEntity<?> findUser(@PathVariable Long id){
-        users user =userServices.findUser(id);
-        return user != null ?new ResponseEntity<>(user, HttpStatus.FOUND): new ResponseEntity<>("Resource not Found ",HttpStatus.NOT_FOUND);
-    }
-    @DeleteMapping("delete/{id}")
-    public ResponseEntity<?> DeleteUser(@PathVariable Long id){
-        users user =userServices.findUser(id);
-        if(user != null){
-            userServices.deleteUser(id);
-            return new ResponseEntity<>("Deletion Complete...",HttpStatus.NO_CONTENT);
+
+    @PutMapping("/{username}")
+    public ResponseEntity<?> updateUser(@RequestBody users newUserData,@PathVariable String username){
+        users usersDb=userServices.findUser(username);
+        if(usersDb !=null ){
+            usersDb.setUsername(newUserData.getUsername());
+            usersDb.setPassword(newUserData.getPassword());
+            userServices.saveUser(usersDb);
+            return new ResponseEntity<>(usersDb,HttpStatus.OK);
         }
-        return new ResponseEntity<>("No Resource Found for Deletion...",HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
 }

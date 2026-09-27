@@ -1,8 +1,6 @@
 package com.coder.library.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -12,10 +10,11 @@ import lombok.Setter;
 @Setter
 public class users {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
     @NonNull
     @Column(unique = true)
-    private String user;
+    private String username;
     @NonNull
     private String password;
 }

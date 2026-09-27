@@ -18,14 +18,11 @@ public class userServices {
     public users saveUser(users users){
         return userRepo.save(users);
     }
-    public users findUser(Long id){
-        return userRepo.findById(id).orElse(null);
+    public users findUser(String user){
+        return userRepo.findByUsername(user);
     }
     public void deleteUser(Long id){
         userRepo.deleteById(id);
     }
-    public void updateUser(Long id,users newdata){
-        users users=userRepo.findById(id).orElse(null);
 
-    }
 }
